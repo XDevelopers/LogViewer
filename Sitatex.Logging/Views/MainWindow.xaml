@@ -1,0 +1,218 @@
+﻿<Window x:Class="Sitatex.Logging.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sitatex.Logging"
+        xmlns:converters="clr-namespace:Sitatex.Logging.Converters"
+        xmlns:viewModels="clr-namespace:Sitatex.Logging.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"        
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        SnapsToDevicePixels="True"         
+        mc:Ignorable="d"
+        Title="PoC (Proof of Concept) - Sitatex Logging" 
+        Height="768" Width="1024" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="ThreeDBorderWindow" 
+        Icon="/Content/SitatexIcon.ico"
+        d:DataContext="{d:DesignInstance viewModels:MainViewModel}" >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>        
+    </Window.Resources>
+    <Grid>
+        <Grid.Resources>
+            <converters:VisibilityBoolConverter x:Key="VisibilityBoolConverter" />
+            <converters:NullVisibilityConverter x:Key="NullVisibilityConverter" />
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="3,2,3,2" />
+                <Setter Property="Width" Value="100" />
+            </Style>
+        </Grid.Resources>
+        <Grid Background="#FF333333" Grid.ColumnSpan="2">
+            <Grid.Resources>
+                <Style x:Key="RoundButtonTemplate" TargetType="Button">
+                    <Setter Property="Background" Value="Brown"/>
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="15" Background="{TemplateBinding Background}"
+                                BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                    </ContentPresenter>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15*"></ColumnDefinition>
+                <ColumnDefinition Width="85*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!-- Menu -->
+            <DockPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Height="48" VerticalAlignment="Top" Background="{DynamicResource MaterialDesignPaper}">
+                <Menu IsMainMenu="True" VerticalAlignment="Stretch">
+                    <MenuItem Header="_File">
+                        <MenuItem Header="Save" IsEnabled="False">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentSave" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Save As.." IsEnabled="False" />
+                        <MenuItem Header="Open" Click="OpenFileClick">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="FilePlus" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Logger Settings" Click="SetupClick" />
+                        <Separator />
+                        <MenuItem Header="Exit" InputGestureText="Ctrl+E" Click="ExitClick">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ExitToApp" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <!--<MenuItem Header="Dig Deeper" InputGestureText="Ctrl+D">
+                        <MenuItem Header="Enlightenment?" IsCheckable="True" />
+                        <MenuItem Header="Disappointment" IsCheckable="True" />
+                    </MenuItem>-->
+                    </MenuItem>
+                    <MenuItem Header="_Edit">
+                        <MenuItem Header="_Cut" Command="Cut">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentCut" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Copy" Command="Copy">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentCopy" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Paste" Command="Paste">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ContentPaste" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+                <TextBox AcceptsReturn="True" />
+            </DockPanel>
+            <!-- Buttons -->
+            <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth4" Content="Log Debug" HorizontalAlignment="Center" VerticalAlignment="Center" Width="115" Height="36" Click="AddLogClick" />
+            <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth4" Content="Log Info" HorizontalAlignment="Center" VerticalAlignment="Center" Width="115" Height="36" Click="AddLogClick" />
+            <Button Grid.Column="0" Grid.Row="3" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth4" Content="Log Warning" HorizontalAlignment="Center" VerticalAlignment="Center" Width="115" Height="36" Click="AddLogClick" />
+            <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth4" Content="Log Error" HorizontalAlignment="Center" VerticalAlignment="Center" Width="115" Height="36" Click="AddLogClick" />
+            <Button Grid.Column="0" Grid.Row="5" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ShadowAssist.ShadowDepth="Depth4" Content="Log Fatal" HorizontalAlignment="Center" VerticalAlignment="Center" Width="115" Height="36" Click="AddLogClick" />
+
+            <!-- Grid to display results -->
+            <Grid x:Name="GridResult" Grid.Column="1" Grid.RowSpan="6" Margin="0,0,0,0" Background="White" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!-- TabControl -->
+                <TabControl Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0" Margin="2" Name="MainTabControl" ItemsSource="{Binding FileMonitors}" SelectedItem="{Binding SelectedFile}">
+                    <TabControl.ItemTemplate>
+                        <DataTemplate DataType="viewModels:FileMonitorViewModel">
+                            <TextBlock Text="{Binding FileName}" ToolTip="{Binding FilePath}" />
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate DataType="viewModels:FileMonitorViewModel">
+                            <Grid>
+                                <TextBox IsReadOnly="True" FontFamily="{Binding DataContext.Font, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                         TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" UndoLimit="0" IsUndoEnabled="False" 
+                                         Text="{Binding Contents}" TextChanged="TextBoxBaseOnTextChanged" />
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding FileExists, Converter={StaticResource VisibilityBoolConverter}}" >
+                                    <Border CornerRadius="3" Background="#BBBB0000">
+                                        <Border.Effect>
+                                            <DropShadowEffect  RenderingBias="Quality" Opacity="0.6" BlurRadius="3" ShadowDepth="4" />
+                                        </Border.Effect>
+                                    </Border>
+                                    <Label Foreground="White" FontSize="20" Padding="30,10,30,15">File Does Not Exist</Label>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
+                <!-- Footer -->
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">Last Updated:</Label>
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding LastUpdatedMessage}"/>
+                    <Label Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="{Binding SelectedFile, Converter={StaticResource NullVisibilityConverter}}">Encoding:</Label>
+                    <ComboBox Grid.Column="3" VerticalAlignment="Center" Margin="3" SelectedValue="{Binding SelectedFile.EncodingName}" Visibility="{Binding SelectedFile, Converter={StaticResource NullVisibilityConverter}}"
+                      SelectedValuePath="Name" DisplayMemberPath="DisplayName" ItemsSource="{Binding AvailableEncodings}"/>
+                </Grid>
+                <!-- DataGrid -->
+                <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="DatagridLogs"
+                          DataContext="viewModels:FileMonitorViewModel"
+                          Margin="5 8 5 5"
+                          ItemsSource="{Binding LogEntries}"
+                          CanUserSortColumns="True"
+                          CanUserAddRows="False" >
+                </DataGrid>
+
+            </Grid>
+
+            <!-- Grid to display the settings related to log4net -->
+            <Grid x:Name="GridConfig" Grid.Column="1" Grid.RowSpan="6" Margin="0,40,0,0" Background="White" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"></ColumnDefinition>
+                    <ColumnDefinition Width="80*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+            </Grid>
+
+        </Grid>
+
+        <Grid x:Name="Overlay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Visibility="{Binding ElementName=Overlay, Path=IsEnabled, Converter={StaticResource VisibilityBoolConverter}}">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity=".5"/>
+            </Grid.Background>
+        </Grid>
+
+    </Grid>
+</Window>
