@@ -1,0 +1,262 @@
+﻿<Window x:Class="Sitatex.Logging.Views.MasterPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sitatex.Logging.Views"
+        xmlns:components="clr-namespace:Sitatex.Logging.Components"
+        mc:Ignorable="d" Title="Sitatex.Logging" Height="800" Width="1440" AllowDrop="True" WindowStartupLocation="CenterScreen"
+        Icon="/Sitatex.Logging;component/Content/SitatexIcon.ico">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <!-- Menu -->
+                <Menu Grid.Column="0" Name="menu1" Height="22" HorizontalAlignment="Stretch" Background="{DynamicResource MaterialDesignPaper}">
+                    <MenuItem Header="File">
+                        <MenuItem Header="Open" Click="MenuFileOpenClick" />
+                        <Separator BorderThickness="1" />
+                        <components:RecentFileList x:Name="RecentFileList"/>
+                        <Separator BorderThickness="1" />
+                        <MenuItem Header="Export" Click="MenuExportClick"/>
+                        <Separator BorderThickness="1" />
+                        <MenuItem Header="Exit" Click="MenuFileExitClick"/>
+                    </MenuItem>
+                    <MenuItem Header="Log">
+                        <MenuItem Header="Info" Click="AddLogClick" />
+                        <MenuItem Header="Warning" Click="AddLogClick" />
+                        <MenuItem Header="Error" Click="AddLogClick" />
+                        <MenuItem Header="Debug" Click="AddLogClick" />
+                        <MenuItem Header="Fatal" Click="AddLogClick" />
+                    </MenuItem>
+                    <MenuItem Header="Refresh" Click="MenuRefreshClick" />
+                    <MenuItem Header="Filter" Click="MenuFilterClick" />
+                    <MenuItem Header="About" Click="MenuAboutClick" />
+                </Menu>
+                <!-- Panel to display count related to messages -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Image x:Name="imageError" Height="16" Width="16" Visibility="Hidden" VerticalAlignment="Center"/>
+                        <Label x:Name="labelErrorCount" Visibility="Hidden" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Image x:Name="imageInfo" Height="16" Width="16" Visibility="Hidden" VerticalAlignment="Center"/>
+                        <Label x:Name="labelInfoCount" Visibility="Hidden" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <Image x:Name="imageWarn" Height="16" Width="16" Visibility="Hidden" VerticalAlignment="Center"/>
+                        <Label x:Name="labelWarnCount" Visibility="Hidden" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Orientation="Horizontal">
+                        <Image x:Name="imageDebug" Height="16" Width="16" Visibility="Hidden"/>
+                        <Label x:Name="labelDebugCount" Visibility="Hidden" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                <!-- Panel to display info related to FileName -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Label FontWeight="Normal"
+                           FontSize="16"
+                           FontFamily="Calibri"
+                           Content="Path:"/>
+                    <TextBox Name="textboxFileName"
+                           Foreground="Orange"
+                           FontWeight="Normal"
+                           FontSize="16"
+                           FontFamily="Calibri"
+                           HorizontalAlignment="Stretch"
+                           Background="Transparent"                       
+                           BorderThickness="0"
+                           Margin="2,2,2,2" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Image Name="image2" Width="16" Height="16" Margin="2" Source="/Sitatex.Logging;component/Content/Images/find.png" VerticalAlignment="Center"/>
+                    <Label Name="label3" Content="Find:" VerticalAlignment="Center"/>
+                    <TextBox Height="20" Name="textBoxFind" Width="120" VerticalAlignment="Center" AcceptsReturn="False" KeyDown="FindKeyDown" />
+                    <Button Height="23" Name="buttonFindNext" Width="27" Click="FindNextClick" Cursor="Hand" VerticalAlignment="Center">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Width="16" Height="16" ToolTip="Find Next" Source="/Sitatex.Logging;component/Content/Images/arrow_right.png" />
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Height="23" Name="buttonFindPrevious" Width="23" Click="FindPreviousClick" Cursor="Hand" VerticalAlignment="Center">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Width="16" Height="16" ToolTip="Find Previous" Source="/Sitatex.Logging;component/Content/Images/arrow_left.png" />
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+        <StatusBar Height="23" DockPanel.Dock="Bottom" >
+            <StatusBarItem Content="Ready"/>
+        </StatusBar>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300"/>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GridSplitter Name="gridSplitter1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.Row="0" Height="4">
+                <GridSplitter.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="LightGray" Offset="0"/>
+                        <GradientStop Color="DarkGray" Offset="1"/>
+                    </LinearGradientBrush>
+                </GridSplitter.Background>
+            </GridSplitter>
+            <!-- List View -->
+            <Border BorderThickness="4,4,4,4" Margin="0,0,0,10">
+                <ListView Name="listViewLogs" 
+                      Grid.Row="0" 
+                      ItemsSource= "{Binding ElementName=MasterPage, Path=Entries}" 
+                      AllowDrop="True"
+                      SelectionChanged="SelectionChanged" 
+                      Drop="DragDrop">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Level}" Value="ERROR">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Level}" Value="INFO">
+                                    <Setter Property="Foreground" Value="Green"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Level}" Value="DEBUG">
+                                    <Setter Property="Foreground" Value="LightCoral"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Level}" Value="WARN">
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Level}" Value="FATAL">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Level}" Value="COMPRESSION">
+                                    <Setter Property="Foreground" Value="Gainsboro" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="Height" Value="20"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView x:Name="GridView1">
+                            <GridViewColumn Header="Item" DisplayMemberBinding="{Binding Item}"  />
+                            <GridViewColumn Header="TimeStamp" DisplayMemberBinding="{Binding TimeStamp}"/>
+                            <GridViewColumn Header="">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Image}" Width="16" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Level" DisplayMemberBinding="{Binding Level}"/>
+                            <GridViewColumn Header="Thread" DisplayMemberBinding="{Binding Thread}"/>
+                            <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}" Width="250" />
+                            <GridViewColumn Header="MachineName" DisplayMemberBinding="{Binding MachineName}"/>
+                            <GridViewColumn Header="HostName" DisplayMemberBinding="{Binding HostName}"/>
+                            <GridViewColumn Header="UserName" DisplayMemberBinding="{Binding UserName}"/>
+                            <GridViewColumn Header="App" DisplayMemberBinding="{Binding App}"/>
+                            <GridViewColumn Header="Class" DisplayMemberBinding="{Binding Class}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Border>
+            <!-- Data Fields and Tab Control  -->
+            <Grid Grid.Row="1" Margin="15,5,15,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <!-- Row 1-->
+                <Image Name="image1" Width="16" Height="16" Grid.Column="0" Grid.Row="1" />
+                <TextBox Name="textBoxLevel" Height="23" Grid.Column="1" Grid.Row="1" />
+                
+                <Label VerticalAlignment="Center" Grid.Column="2" Grid.Row="1">Time Stamp</Label>
+                <TextBox Name="textBoxTimeStamp" Height="23" Grid.Column="3" Grid.Row="1" />
+                
+                <Label VerticalAlignment="Center" Grid.Column="4" Grid.Row="1">Machine Name</Label>
+                <TextBox Name="textBoxMachineName" Height="23" Grid.Column="5" Grid.Row="1" />
+                
+                <Label VerticalAlignment="Center" Grid.Column="6" Grid.Row="1">Thread</Label>
+                <TextBox Name="textBoxThread" Height="23" Grid.Column="7" Grid.Row="1"/>
+                
+                <!-- Row 2 -->
+                <Label VerticalAlignment="Center" Grid.Column="0" Grid.Row="2">Item</Label>
+                <TextBox Name="textBoxItem" Height="23" Grid.Column="1" Grid.Row="2" />
+                
+                <Label VerticalAlignment="Center" Grid.Column="2" Grid.Row="2">Host Name</Label>
+                <TextBox Name="textBoxHostName" Height="23" Grid.Column="3" Grid.Row="2"/>
+                
+                <Label VerticalAlignment="Center" Grid.Column="4" Grid.Row="2">User Name</Label>
+                <TextBox Name="textBoxUserName" Height="23" Grid.Column="5" Grid.Row="2"/>
+                
+                <Label VerticalAlignment="Center" Grid.Column="6" Grid.Row="2">App</Label>
+                <TextBox Name="textBoxApp" Height="23" Grid.Column="7" Grid.Row="2"/>
+
+                <!-- Row 3-->
+                <Label VerticalAlignment="Center" Grid.Column="0" Grid.Row="3">Class</Label>
+                <TextBox Name="textBoxClass" Height="23" Grid.Column="1" Grid.Row="3"/>
+                
+                <Label VerticalAlignment="Center" Grid.Column="2" Grid.Row="3">Method</Label>
+                <TextBox Name="textBoxMethod" Height="23" Grid.Column="3" Grid.Row="3"/>
+                
+                <Label VerticalAlignment="Center" Grid.Column="4" Grid.Row="3">Line</Label>
+                <TextBox Name="textBoxLine" Height="23" Grid.Column="5" Grid.Row="3"/>
+                
+                <!-- Row 4-->
+                <Label VerticalAlignment="Center" Grid.Column="0" Grid.Row="4">File</Label>
+                <TextBox Name="textBoxfile" Height="23" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="4"/>
+
+            </Grid>
+            <TabControl Name="tabControl1" Grid.Row="2" Margin="15,10,15,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TabItem Header="Message">
+                    <TextBox Name="textBoxMessage" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" BorderThickness="0" />
+                </TabItem>
+                <TabItem Header="Throwable">
+                    <TextBox Name="textBoxThrowable" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" BorderThickness="0"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
+</Window>

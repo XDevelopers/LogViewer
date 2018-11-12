@@ -32,7 +32,7 @@ namespace Sitatex.Logging
         {
             var app = new App
             {
-                MainWindow = new MainWindow(Log) 
+                MainWindow = new MasterPage()//new MainWindow(Log) 
             };
             app.Run();
         }
@@ -57,7 +57,8 @@ namespace Sitatex.Logging
 
             container.RegisterType<IMainWindow, MainWindow>();
             
-            var mainWindow = container.Resolve<MainWindow>();
+            //var mainWindow = container.Resolve<MainWindow>();
+            var mainWindow = container.Resolve<MasterPage>();
 
             // Splash screen
             SplashScreen splashScreen = container.Resolve<SplashScreen>();
