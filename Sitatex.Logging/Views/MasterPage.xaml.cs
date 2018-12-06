@@ -561,6 +561,7 @@ namespace Sitatex.Logging.Views
             {
                 Clear();
                 LogEntry logentry = this.listViewLogs.SelectedItem as LogEntry;
+                if (logentry == null) return;
 
                 this.image1.Source = logentry.Image;
                 this.textBoxLevel.Text = logentry.Level;
